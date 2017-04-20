@@ -10,4 +10,8 @@ class Grid
       hash.merge({ [pixel.row, pixel.column] => pixel })
     end
   end
+
+  def pixel_at(row, column)
+    pixels[[row, column]]
+  end
 end
