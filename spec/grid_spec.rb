@@ -1,7 +1,7 @@
 require 'grid'
 RSpec.describe Grid do
-  let(:pixel) { double :pixel, row: 1, column: 1 }
-  let(:pixel2) { double :pixel, row: 1, column: 2 }
+  let(:pixel) { double :pixel, column: 1, row: 1 }
+  let(:pixel2) { double :pixel, column: 1, row: 2  }
   let(:grid) { Grid.new([pixel, pixel2]) }
 
   it 'can be initialized with a set of pixels ' do
@@ -23,19 +23,19 @@ RSpec.describe Grid do
   end
 
   context 'with_dimensions' do
-    let(:rows) { 5 }
     let(:columns) { 5 }
-    let(:generic_pixel) { double :pixel, row: 1, column: 1 }
+    let(:rows) { 5 }
+    let(:generic_pixel) { double :pixel, column: 1, row: 1 }
     let(:pixel_class) { double :pixel_class, new: generic_pixel }
 
     it 'instantiates a grid' do
-      grid = Grid.with_dimensions(rows: rows, columns: columns, pixel_class: pixel_class)
+      grid = Grid.with_dimensions(columns: columns, rows: rows, pixel_class: pixel_class)
       expect(grid).to be_an_instance_of(Grid)
     end
 
     context 'instantiating pixels' do
       after do
-        Grid.with_dimensions(rows: rows, columns: columns, pixel_class: pixel_class)
+        Grid.with_dimensions(columns: columns, rows: rows, pixel_class: pixel_class)
       end
 
       it 'instantiates the expected amount of pixels' do

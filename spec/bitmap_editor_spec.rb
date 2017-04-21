@@ -6,7 +6,7 @@ RSpec.describe BitmapEditor do
 
   context '#create_image' do
     it 'will create a grid with the dimensions specified' do
-      expect(grid_class).to receive(:with_dimensions).with(rows: 5, columns: 8)
+      expect(grid_class).to receive(:with_dimensions).with(columns: 5, rows: 8)
       bme.create_image(5, 8)
     end
 
@@ -31,7 +31,7 @@ RSpec.describe BitmapEditor do
       pixel = double :pixel
       expect(pixel).to receive(:paint).with('A')
       allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel)
-      bme.paint_pixel(row: 1, column: 1, colour: 'A')
+      bme.paint_pixel(1, 1, 'A')
     end
   end
 
@@ -48,14 +48,14 @@ RSpec.describe BitmapEditor do
     context '#paint_vertical_line' do
       before do
         allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel1)
-        allow(grid).to receive(:pixel_at).with(2, 1).and_return(pixel2)
-        allow(grid).to receive(:pixel_at).with(3, 1).and_return(pixel3)
-        allow(grid).to receive(:pixel_at).with(4, 1).and_return(out_of_range_pixel)
-        allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_column_pixel)
+        allow(grid).to receive(:pixel_at).with(1, 2).and_return(pixel2)
+        allow(grid).to receive(:pixel_at).with(1, 3).and_return(pixel3)
+        allow(grid).to receive(:pixel_at).with(1, 4).and_return(out_of_range_pixel)
+        allow(grid).to receive(:pixel_at).with(2, 1).and_return(diff_column_pixel)
       end
 
       after do
-        bme.paint_vertical_line(column: 1, from_row: 1, to_row: 3, colour: 'W')
+        bme.paint_vertical_line(1, 1, 3, 'W')
       end
 
       it 'will paint all pixels within the same column for the range specified' do
@@ -76,14 +76,14 @@ RSpec.describe BitmapEditor do
     context '#paint_horizontal_line' do
       before do
         allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel1)
-        allow(grid).to receive(:pixel_at).with(1, 2).and_return(pixel2)
-        allow(grid).to receive(:pixel_at).with(1, 3).and_return(pixel3)
-        allow(grid).to receive(:pixel_at).with(1, 4).and_return(out_of_range_pixel)
-        allow(grid).to receive(:pixel_at).with(2, 1).and_return(diff_row_pixel)
+        allow(grid).to receive(:pixel_at).with(2, 1).and_return(pixel2)
+        allow(grid).to receive(:pixel_at).with(3, 1).and_return(pixel3)
+        allow(grid).to receive(:pixel_at).with(4, 1).and_return(out_of_range_pixel)
+        allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_row_pixel)
       end
 
       after do
-        bme.paint_horizontal_line(row: 1, from_column: 1, to_column: 3, colour: 'Z')
+        bme.paint_horizontal_line(1, 1, 3, 'Z')
       end
 
       it 'will paint all pixels within the same row for the range specified' do

@@ -2,9 +2,9 @@ class Pixel
   attr_reader :row, :column
   attr_accessor :colour
 
-  def initialize(row, column)
-    @row = row
+  def initialize(column, row)
     @column = column
+    @row = row
     @colour = 'O'
   end
 

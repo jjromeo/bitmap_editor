@@ -1,11 +1,11 @@
 class Grid
   attr_reader :pixel_map, :pixels
 
-  def self.with_dimensions(rows:, columns:, pixel_class: Pixel)
+  def self.with_dimensions(columns:, rows:, pixel_class: Pixel)
     pixels = []
     rows.times do |row|
       columns.times do |column|
-        pixels << pixel_class.new(row + 1, column + 1)
+        pixels << pixel_class.new(column + 1, row + 1)
       end
     end
     new(pixels)
@@ -18,12 +18,12 @@ class Grid
 
   def map_pixels(pixels)
     pixels.inject({}) do |hash, pixel|
-      hash.merge({ [pixel.row, pixel.column] => pixel })
+      hash.merge({ [pixel.column, pixel.row] => pixel })
     end
   end
 
-  def pixel_at(row, column)
-    pixel_map[[row, column]]
+  def pixel_at(column, row)
+    pixel_map[[column, row]]
   end
 
   def clear
