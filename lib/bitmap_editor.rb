@@ -25,7 +25,17 @@ class BitmapEditor
     @grid = grid_class.with_dimensions(rows, columns)
   end
 
-  def clear
+  def reset
     grid.reset
+  end
+
+  def paint_pixel(row:, column:, colour:)
+    grid.pixel_at(row, column).paint(colour)
+  end
+
+  def paint_vertical_line(column:, from_row:, to_row:, colour:)
+    (from_row..to_row).each do |row|
+      grid.pixel_at(row, column).paint(colour)
+    end
   end
 end
