@@ -17,11 +17,11 @@ RSpec.describe BitmapEditor do
     end
   end
 
-  context '#reset' do
+  context '#clear' do
     before { bme.create_image(1,1) }
-    it 'will reset its grid' do
-      expect(grid).to receive(:reset)
-      bme.reset
+    it 'will clear its grid' do
+      expect(grid).to receive(:clear)
+      bme.clear
     end
   end
 

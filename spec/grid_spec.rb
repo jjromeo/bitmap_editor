@@ -16,10 +16,10 @@ RSpec.describe Grid do
     expect(grid.pixel_at(1,1)).to eq pixel
   end
 
-  it 'can reset all its pixels to default colour' do
+  it 'can clear all its pixels to default colour' do
     expect(pixel).to receive(:paint).with('O')
     expect(pixel2).to receive(:paint).with('O')
-    grid.reset
+    grid.clear
   end
 
   context 'with_dimensions' do

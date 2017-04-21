@@ -25,8 +25,8 @@ class BitmapEditor
     @grid = grid_class.with_dimensions(rows: rows, columns: columns)
   end
 
-  def reset
-    grid.reset
+  def clear
+    grid.clear
   end
 
   def paint_pixel(row:, column:, colour:)

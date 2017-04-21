@@ -26,7 +26,7 @@ class Grid
     pixel_map[[row, column]]
   end
 
-  def reset
+  def clear
     pixels.each {|pixel| pixel.paint('O') }
   end
 
