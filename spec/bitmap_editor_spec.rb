@@ -54,22 +54,32 @@ RSpec.describe BitmapEditor do
         allow(grid).to receive(:pixel_at).with(2, 1).and_return(diff_column_pixel)
       end
 
-      after do
-        bme.paint_vertical_line(1, 1, 3, 'W')
+      shared_examples 'a successful vertical line' do
+        it 'will paint all pixels within the same column for the range specified' do
+          expect(pixel1).to receive(:paint).with('W')
+          expect(pixel2).to receive(:paint).with('W')
+          expect(pixel3).to receive(:paint).with('W')
+        end
+
+        it 'will not paint a pixel which is in the same col but out of range' do
+          expect(out_of_range_pixel).not_to receive(:paint)
+        end
+
+        it 'will not paint a pixel in a diff column' do
+          expect(diff_column_pixel).not_to receive(:paint)
+        end
       end
 
-      it 'will paint all pixels within the same column for the range specified' do
-        expect(pixel1).to receive(:paint).with('W')
-        expect(pixel2).to receive(:paint).with('W')
-        expect(pixel3).to receive(:paint).with('W')
+      context 'with normal input' do
+        after { bme.paint_vertical_line(1, 1, 3, 'W') }
+
+        it_behaves_like 'a successful vertical line'
       end
 
-      it 'will not paint a pixel which is in the same col but out of range' do
-        expect(out_of_range_pixel).not_to receive(:paint)
-      end
+      context 'when the range is in reverse' do
+        after { bme.paint_vertical_line(1, 3, 1, 'W') }
 
-      it 'will not paint a pixel in a diff column' do
-        expect(diff_column_pixel).not_to receive(:paint)
+        it_behaves_like 'a successful vertical line'
       end
     end
 
@@ -82,11 +92,7 @@ RSpec.describe BitmapEditor do
         allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_row_pixel)
       end
 
-      context 'with normal input' do
-        after do
-          bme.paint_horizontal_line(1, 3, 1, 'Z')
-        end
-
+      shared_examples 'a successful horizontal line' do
         it 'will paint all pixels within the same row for the range specified' do
           expect(pixel1).to receive(:paint).with('Z')
           expect(pixel2).to receive(:paint).with('Z')
@@ -102,13 +108,20 @@ RSpec.describe BitmapEditor do
         end
       end
 
+      context 'with normal input' do
+        after do
+          bme.paint_horizontal_line(1, 3, 1, 'Z')
+        end
+
+        it_behaves_like 'a successful horizontal line'
+      end
+
       context 'when range is reversed' do
-        it 'will still paint the correct pixels' do
-          expect(pixel1).to receive(:paint).with('Z')
-          expect(pixel2).to receive(:paint).with('Z')
-          expect(pixel3).to receive(:paint).with('Z')
+        after do
           bme.paint_horizontal_line(3, 1, 1, 'Z')
         end
+
+        it_behaves_like 'a successful horizontal line'
       end
     end
   end
