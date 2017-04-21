@@ -1,6 +1,16 @@
 class Grid
   attr_reader :pixels
 
+  def self.with_dimensions(rows:, columns:, pixel_class: Pixel)
+    pixels = []
+    rows.times do |row|
+      columns.times do |column|
+        pixels << pixel_class.new(row + 1, column + 1)
+      end
+    end
+    new(pixels)
+  end
+
   def initialize(pixels)
     @pixels = map_pixels(pixels)
   end
