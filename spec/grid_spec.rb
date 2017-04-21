@@ -39,7 +39,6 @@ RSpec.describe Grid do
             expect(pixel_class).to receive(:new).with(row + 1, column + 1)
           end
         end
-
       end
     end
   end
