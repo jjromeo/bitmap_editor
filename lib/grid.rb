@@ -1,5 +1,5 @@
 class Grid
-  attr_reader :pixels
+  attr_reader :pixel_map, :pixels
 
   def self.with_dimensions(rows:, columns:, pixel_class: Pixel)
     pixels = []
@@ -12,7 +12,8 @@ class Grid
   end
 
   def initialize(pixels)
-    @pixels = map_pixels(pixels)
+    @pixels = pixels
+    @pixel_map = map_pixels(pixels)
   end
 
   def map_pixels(pixels)
@@ -22,6 +23,10 @@ class Grid
   end
 
   def pixel_at(row, column)
-    pixels[[row, column]]
+    pixel_map[[row, column]]
+  end
+
+  def reset
+    pixels.each {|pixel| pixel.paint('O') }
   end
 end

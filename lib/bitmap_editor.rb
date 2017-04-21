@@ -24,4 +24,8 @@ class BitmapEditor
   def create_image(rows, columns)
     @grid = grid_class.with_dimensions(rows, columns)
   end
+
+  def clear
+    grid.reset
+  end
 end
