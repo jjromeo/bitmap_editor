@@ -38,4 +38,10 @@ class BitmapEditor
       grid.pixel_at(row, column).paint(colour)
     end
   end
+
+  def paint_horizontal_line(row:, from_column:, to_column:, colour:)
+    (from_column..to_column).each do |column|
+      grid.pixel_at(row, column).paint(colour)
+    end
+  end
 end

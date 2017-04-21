@@ -35,25 +35,70 @@ RSpec.describe BitmapEditor do
     end
   end
 
-  context '#paint_vertical_line' do
-    before { bme.create_image(3, 3) }
-    it 'will paint all pixels with the same column' do
-      pixel1 = double :pixel
-      pixel2 = double :pixel
-      pixel3 = double :pixel
-      diff_column_pixel = double :pixel
+  context 'painting multiple pixels' do
+    let(:pixel1) { double :pixel, paint: nil }
+    let(:pixel2) { double :pixel, paint: nil }
+    let(:pixel3) { double :pixel, paint: nil }
+    let(:diff_column_pixel) { double :pixel }
+    let(:diff_row_pixel) { double :pixel }
+    let(:out_of_range_pixel) { double :pixel }
 
-      allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel1)
-      allow(grid).to receive(:pixel_at).with(2, 1).and_return(pixel2)
-      allow(grid).to receive(:pixel_at).with(3, 1).and_return(pixel3)
-      allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_column_pixel)
+    before { bme.create_image(4, 4) }
 
-      expect(pixel1).to receive(:paint).with('W')
-      expect(pixel2).to receive(:paint).with('W')
-      expect(pixel3).to receive(:paint).with('W')
-      expect(diff_column_pixel).not_to receive(:paint)
+    context '#paint_vertical_line' do
+      before do
+        allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel1)
+        allow(grid).to receive(:pixel_at).with(2, 1).and_return(pixel2)
+        allow(grid).to receive(:pixel_at).with(3, 1).and_return(pixel3)
+        allow(grid).to receive(:pixel_at).with(4, 1).and_return(out_of_range_pixel)
+        allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_column_pixel)
+      end
 
-      bme.paint_vertical_line(column: 1, from_row: 1, to_row: 3, colour: 'W')
+      after do
+        bme.paint_vertical_line(column: 1, from_row: 1, to_row: 3, colour: 'W')
+      end
+
+      it 'will paint all pixels within the same column for the range specified' do
+        expect(pixel1).to receive(:paint).with('W')
+        expect(pixel2).to receive(:paint).with('W')
+        expect(pixel3).to receive(:paint).with('W')
+      end
+
+      it 'will not paint a pixel which is in the same col but out of range' do
+        expect(out_of_range_pixel).not_to receive(:paint)
+      end
+
+      it 'will not paint a pixel in a diff column' do
+        expect(diff_column_pixel).not_to receive(:paint)
+      end
+    end
+
+    context '#paint_horizontal_line' do
+      before do
+        allow(grid).to receive(:pixel_at).with(1, 1).and_return(pixel1)
+        allow(grid).to receive(:pixel_at).with(1, 2).and_return(pixel2)
+        allow(grid).to receive(:pixel_at).with(1, 3).and_return(pixel3)
+        allow(grid).to receive(:pixel_at).with(1, 4).and_return(out_of_range_pixel)
+        allow(grid).to receive(:pixel_at).with(2, 1).and_return(diff_row_pixel)
+      end
+
+      after do
+        bme.paint_horizontal_line(row: 1, from_column: 1, to_column: 3, colour: 'Z')
+      end
+
+      it 'will paint all pixels within the same row for the range specified' do
+        expect(pixel1).to receive(:paint).with('Z')
+        expect(pixel2).to receive(:paint).with('Z')
+        expect(pixel3).to receive(:paint).with('Z')
+      end
+
+      it 'will not paint a pixel which is in the same row but out range' do
+        expect(out_of_range_pixel).not_to receive(:paint)
+      end
+
+      it 'will not paint a pixel in a different row' do
+        expect(diff_row_pixel).not_to receive(:paint)
+      end
     end
   end
 end
