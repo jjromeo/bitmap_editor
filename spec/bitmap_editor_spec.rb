@@ -6,7 +6,7 @@ RSpec.describe BitmapEditor do
 
   context '#create_image' do
     it 'will create a grid with the dimensions specified' do
-      expect(grid_class).to receive(:with_dimensions).with(5, 8)
+      expect(grid_class).to receive(:with_dimensions).with(rows: 5, columns: 8)
       bme.create_image(5, 8)
     end
 

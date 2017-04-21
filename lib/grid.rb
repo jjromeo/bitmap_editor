@@ -29,4 +29,17 @@ class Grid
   def reset
     pixels.each {|pixel| pixel.paint('O') }
   end
+
+  def display_image
+    last_pixel_row = nil
+    pixels.inject("") do |string, pixel|
+      if last_pixel_row.nil? || last_pixel_row == pixel.row
+        string << pixel.colour
+      else
+        string << "\n#{pixel.colour}"
+      end
+      last_pixel_row = pixel.row
+      string
+    end
+  end
 end

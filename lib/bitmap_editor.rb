@@ -22,7 +22,7 @@ class BitmapEditor
   end
 
   def create_image(rows, columns)
-    @grid = grid_class.with_dimensions(rows, columns)
+    @grid = grid_class.with_dimensions(rows: rows, columns: columns)
   end
 
   def reset
@@ -43,5 +43,9 @@ class BitmapEditor
     (from_column..to_column).each do |column|
       grid.pixel_at(row, column).paint(colour)
     end
+  end
+
+  def display_image
+    puts grid.display_image
   end
 end
