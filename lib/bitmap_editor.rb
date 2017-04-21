@@ -30,13 +30,15 @@ class BitmapEditor
   end
 
   def paint_vertical_line(column, from_row, to_row, colour)
-    (from_row..to_row).each do |row|
+    first_row, second_row = [from_row, to_row].sort
+    (first_row..second_row).each do |row|
       paint_pixel(column, row, colour)
     end
   end
 
-  def paint_horizontal_line(row, from_column, to_column, colour)
-    (from_column..to_column).each do |column|
+  def paint_horizontal_line(from_column, to_column, row, colour)
+    first_column, second_column = [from_column, to_column].sort
+    (first_column..second_column).each do |column|
       paint_pixel(column, row, colour)
     end
   end

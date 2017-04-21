@@ -82,22 +82,33 @@ RSpec.describe BitmapEditor do
         allow(grid).to receive(:pixel_at).with(1, 2).and_return(diff_row_pixel)
       end
 
-      after do
-        bme.paint_horizontal_line(1, 1, 3, 'Z')
+      context 'with normal input' do
+        after do
+          bme.paint_horizontal_line(1, 3, 1, 'Z')
+        end
+
+        it 'will paint all pixels within the same row for the range specified' do
+          expect(pixel1).to receive(:paint).with('Z')
+          expect(pixel2).to receive(:paint).with('Z')
+          expect(pixel3).to receive(:paint).with('Z')
+        end
+
+        it 'will not paint a pixel which is in the same row but out range' do
+          expect(out_of_range_pixel).not_to receive(:paint)
+        end
+
+        it 'will not paint a pixel in a different row' do
+          expect(diff_row_pixel).not_to receive(:paint)
+        end
       end
 
-      it 'will paint all pixels within the same row for the range specified' do
-        expect(pixel1).to receive(:paint).with('Z')
-        expect(pixel2).to receive(:paint).with('Z')
-        expect(pixel3).to receive(:paint).with('Z')
-      end
-
-      it 'will not paint a pixel which is in the same row but out range' do
-        expect(out_of_range_pixel).not_to receive(:paint)
-      end
-
-      it 'will not paint a pixel in a different row' do
-        expect(diff_row_pixel).not_to receive(:paint)
+      context 'when range is reversed' do
+        it 'will still paint the correct pixels' do
+          expect(pixel1).to receive(:paint).with('Z')
+          expect(pixel2).to receive(:paint).with('Z')
+          expect(pixel3).to receive(:paint).with('Z')
+          bme.paint_horizontal_line(3, 1, 1, 'Z')
+        end
       end
     end
   end
