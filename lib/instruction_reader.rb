@@ -24,8 +24,8 @@ class InstructionReader
 
   def sanitize_arguments(args, expected_arity)
     all_args = args.map do |arg|
-      arg.to_i == 0 ? arg.to_s : arg.to_i
+      arg.to_i == 0 ? arg.to_s.upcase : arg.to_i
     end
-    expected_arity.zero? ? [] : all_args.slice(0..(expected_arity - 1))
+    expected_arity.to_i.zero? ? [] : all_args.slice(0..(expected_arity - 1))
   end
 end
