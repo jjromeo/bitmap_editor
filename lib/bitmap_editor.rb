@@ -9,7 +9,7 @@ class BitmapEditor
       line = line.chomp
       reader.interpret(line)
     end
-    commands.each { |command| public_send(*command) }
+    commands.each { |command| apply_command(command) }
   end
 
   def initialize(grid_class = Grid)
@@ -43,7 +43,22 @@ class BitmapEditor
     end
   end
 
+  def invalid_command(command)
+    puts "#{command} is not a valid command"
+  end
+
   def display_image
     puts grid.display_image
   end
+
+  private
+
+  def apply_command(command)
+    begin
+      public_send(*command)
+    rescue ArgumentError
+      puts "#{command.first} was incorrectly called with #{command[1..-1]}"
+    end
+  end
+
 end

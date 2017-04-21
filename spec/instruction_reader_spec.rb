@@ -63,7 +63,7 @@ RSpec.describe InstructionReader do
 
   context 'invalid arguments' do
     it 'will return invalid_command if an unknown command is put in' do
-      expect(reader.interpret('E 1 4')).to eq [:invalid_command]
+      expect(reader.interpret('E 1 4')).to eq [:invalid_command, 'E']
     end
   end
 end

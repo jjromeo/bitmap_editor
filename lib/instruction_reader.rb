@@ -17,9 +17,9 @@ class InstructionReader
   private
 
   def interpret_command(command_letter, args)
-    command, expected_arity = COMMANDS[command_letter] || :invalid_command
+    command, expected_arity = COMMANDS[command_letter]
     arguments = sanitize_arguments(args, expected_arity)
-    [command, *arguments]
+    command.nil? ? [:invalid_command, command_letter] : [command, *arguments]
   end
 
   def sanitize_arguments(args, expected_arity)
